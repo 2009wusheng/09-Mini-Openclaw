@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git clone:*)",
+      "Bash(cp -r /tmp/mini-openclaw-template/. /d/AI/mini-openclaw/)",
+      "Bash(rm -rf /d/AI/mini-openclaw/.git)",
+      "Bash(pip3 --version)",
+      "Bash(npm --version)",
+      "Bash(/c/Users/2009wusheng/AppData/Local/Programs/Python/Python312/python -m venv openclaw)",
+      "Bash(source openclaw/Scripts/activate)",
+      "Bash(pip install:*)",
+      "Bash(iconv -f UTF-8 -t UTF-8 /d/AI/mini-openclaw/backend/requirements.txt -o /d/AI/mini-openclaw/backend/requirements_utf8.txt)",
+      "Bash(../../openclaw/Scripts/pip install:*)",
+      "Bash(openclaw/Scripts/pip install:*)",
+      "Bash(/d/AI/mini-openclaw/backend/openclaw/Scripts/pip install:*)",
+      "Bash(/d/AI/mini-openclaw/backend/openclaw/Scripts/pip list:*)",
+      "Bash(npm install:*)",
+      "Bash(npm cache:*)",
+      "Bash(ls /d/AI/mini-openclaw/backend/skills/*/SKILL.md)",
+      "Bash(openclaw/Scripts/python -c \"from api.files import is_path_allowed; print\\(''workspace/SOUL.md:'', is_path_allowed\\(''workspace/SOUL.md''\\)\\); print\\(''skills/docx/SKILL.md:'', is_path_allowed\\(''skills/docx/SKILL.md''\\)\\)\")",
+      "Bash(openclaw/Scripts/python -c \"from pathlib import Path; from config import BASE_DIR; p = BASE_DIR / ''workspace'' / ''SOUL.md''; print\\(''Path:'', p\\); print\\(''Exists:'', p.exists\\(\\)\\)\")",
+      "Bash(curl -s http://localhost:8002/api/files?path=workspace/SOUL.md)",
+      "Bash(python3 -c \"import base64; f=open\\(''/d/AI/mini-openclaw/frontend/public/logo.jpg'',''rb''\\); print\\(base64.b64encode\\(f.read\\(\\)\\).decode\\(\\)[:100]\\)\")",
+      "Bash(/d/AI/mini-openclaw/openclaw/Scripts/python.exe -c \":*)",
+      "Bash(python3 -c \":*)",
+      "Bash(git init:*)",
+      "Bash(gh --version)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(/d/AI/mini-openclaw/.gitignore:*)",
+      "Bash(git reset:*)"
+    ]
+  }
+}
