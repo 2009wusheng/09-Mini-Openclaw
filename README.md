@@ -29,11 +29,6 @@
 - **在线代码编辑器**：集成 Monaco Editor，直接编辑 Memory/Skill 文件
 - **对话数量限制**：最多同时进行 5 个对话，超出时友好提示
 
-### 技能系统
-- **Agent Reach**：联网搜索技能，支持网页读取、社交媒体、视频平台等内容获取
-- **PUA 模式**：高执行力问题解决模式，应对复杂任务
-- **技能创建器**：指导创建新技能的完整指南
-
 ---
 
 ## 技术栈
@@ -345,34 +340,6 @@ System Prompt 由以下部分动态拼接：
 - 思考过程显示在折叠面板中
 - 支持步骤标记（如 `[步骤 1/3]`）自动格式化
 - 实时流式显示思考过程
-
----
-
-## 自定义配置
-
-### 自定义 Logo
-
-将你的 Logo 图片放入：
-- `frontend/public/logo.jpg` - 左上角 Logo
-- `frontend/public/welcome.jpg` - 欢迎页 Logo
-
-### 修改对话数量限制
-
-编辑 `frontend/src/lib/store.tsx`：
-```typescript
-if (sessions.length >= 5) {  // 修改这个数字
-  return null
-}
-```
-
-### 修改最大会话提示文字
-
-编辑 `frontend/src/components/layout/Sidebar.tsx`：
-```typescript
-<p className="text-gray-600 dark:text-gray-400 mb-4">
-  老大，最多同时进行五个对话喵~  // 修改这句话
-</p>
-```
 
 ---
 
