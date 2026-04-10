@@ -1,0 +1,11 @@
+542009.best {
+    # API 路由 - 优先处理
+    handle /api/* {
+        reverse_proxy backend:8002
+    }
+
+    # 前端服务
+    handle {
+        reverse_proxy frontend:3001
+    }
+}

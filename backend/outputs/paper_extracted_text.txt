@@ -1,0 +1,265 @@
+
+=== 第 1 页 ===
+Inpaint Anything: Segment Anything Meets Image Inpainting
+TaoYu1 RunsengFeng1 RuoyuFeng1 JinmingLiu2 XinJin2 WenjunZeng2 ZhiboChen1
+1UniversityofScienceandTechnologyofChina 2EasternInstituteforAdvancedStudy
+{yutao666, fengruns, ustcfry}@mail.ustc.edu.cn
+{jmliu, jinxin, wenjunzeng}@eias.ac.cn,chenzhibo@ustc.edu.cn
+Remove Anything
+“a teddy bear
+Segment Inpaint on a bench”
+（SAM） （LaMa, SD）
+Inpaint Anything
+“sit
+on
+the
+sw
+Fill Anything
+ing”
+Replace Anything
+Figure1:IllustrationofourInpaintAnything.Userscanselectanyobjectinanimagebyclickingonit.Withpowerfulvision
+models, e.g., SAM[7], LaMa [13] and Stable Diffusion (SD) [11], Inpaint Anything is able to remove the object smoothly
+(i.e., Remove Anything). Further, by inputting text prompts, users can fill the object with any desired content (i.e., Fill
+Anything)orreplacethebackgroundofitarbitrarily(i.e.,ReplaceAnything).
+Abstract the context; (ii) Fill Anything: after certain objects re-
+moval, users could provide text-based prompts to IA, and
+Modern image inpainting systems, despite the signifi- then it will fill the hole with the corresponding genera-
+cantprogress,oftenstrugglewithmaskselectionandholes tive content via driving AIGC models like Stable Diffu-
+filling. Based on Segment-Anything Model (SAM) [7], we sion [11]; (iii) Replace Anything: with IA, users have an-
+makethefirstattempttothemask-freeimageinpaintingand otheroptiontoretaintheclick-selectedobjectandreplace
+proposeanewparadigmof“clickingandfilling”,whichis theremainingbackgroundwiththenewlygeneratedscenes.
+named as Inpaint Anything (IA). The core idea behind IA We are also very willing to help everyone share and pro-
+is to combine the strengths of different models in order to mote new projects based on our Inpaint Anything (IA).
+build a very powerful and user-friendly pipeline for solv- Our codes are available at https://github.com/
+ing inpainting-related problems. IA supports three main geekyutao/Inpaint-Anything.
+features: (i) Remove Anything: users could click on an
+object and IA will remove it and smooth the “hole” with
+1
+3202
+rpA
+31
+]VC.sc[
+1v09760.4032:viXra
+
+=== 第 2 页 ===
+1.MotivationandObservation Forexample,userscanusethewordof“dog”orasen-
+tenceof“acutedog,sittingonthebench”,togenerate
+1.1.WhydoweneedInpaintAnything?
+a new dog for filling the hole with such newly gener-
+• The state-of-the-art (SOTA) image inpainting works, ateddog.
+like LaMa [13], Repaint [10], MAT [8], ZITS [4], (2) In addition, users have another option to take IA
+etc., haveachieved great progress. They cansuccess- to retain the click-selected object and replace the re-
+fully inpaint large regions and work well with com- maining background with the newly generated scene.
+plex repetitive structures, generalizing well to high- ThisscenereplacementprocessofIAsupportsvarious
+resolution images. However, they typically need fine waysofpromptingAIGCmodels,suchasusingadif-
+annotations for each mask, which are essential for ferentimageasvisualpromptorusingashortcaption
+trainingandinference. astextprompt. Forexample,userscankeepthedogin
+an image but replace the original indoor background
+• Segment Anything Model (SAM) [7] is a strong seg- withanoutdoorone.
+mentation foundation model, producing high quality
+2.Methodology
+object masks from input prompts such as points or
+boxes, and it can be used to generate comprehensive
+2.1.Preliminary
+andaccuratemasksforallobjectsinanimage. How-
+ever, their mask segmentation predictions have not SegmentAnythingModel(SAM). ThefundamentalCV
+beenfully-explored. model of Segment Anything [7] was released last week,
+whichisalargeViT-basedmodeltrainedonthelargevisual
+• Besides, the existing inpainting methods can only fill corpus (SA-1B). SAM has demonstrated promising seg-
+theremovedareawiththecontext. AIGCmodelsopen mentationcapabilitiesinvariousscenariosandthegreatpo-
+up new opportunities for creation, which has the po- tentialofthefoundationmodelsforcomputervision. This
+tentialtomeetmassivedemandandassistshumansto isaground-breakingsteptowardvisualartificialgeneralin-
+newlygeneratetheirwantedcontent. telligence,andSAMwasoncehailedas“theCVversionof
+ChatGPT”.
+• Therefore, by combining the advantages of SAM [7],
+the SOTA image inpainters [13], and AI generated
+SOTA Inpainters. Image inpainting, as an ill-posed in-
+content (AIGC) models [11], we provide a powerful
+verse problem, is widely explored in the field of computer
+and user-friendly pipeline for solving more general
+vision and image processing, which intended to replace
+inpainting-related problems, such as object removal,
+missing regions of damaged images with visually plausi-
+newcontentfilling,andbackgroundreplacing.
+ble structure and texture. The success of deep learning
+has brought new opportunities [13, 10, 8, 4], and all these
+1.2.WhatInpaintAnythingcando?
+SOTA methods can be categorized from multiple perspec-
+• SAM + SOTA inpainters for removing anything: tives,e.g.,inpaintingstrategies,networkstructures,andloss
+WithIA,userscaneasilyremovespecificobjectsfrom functions. For our Inpaint Anything (IA), we investigated
+the interface by simply clicking on them. Further- the use of a simple, single-stage approach LaMa [13] for
+more, IA provides an option for users to fill the re- mask-based inpainting, which is arguably good in gener-
+sulting “hole” with contextual data. Oriented at this, atingrepetitivevisualstructuresbycombiningfastFourier
+wecombinethestrengthsofSAMandsomeSOTAIn- convolutions(FFCs)[1],perceptualloss[6],andanaggres-
+painters like LaMa. Once manually refined through sivetrainingmaskgenerationstrategy.
+corrosionanddilation,themaskpredictionsgenerated
+bySAMserveasinputfortheinpaintingmodels,pro- AIGC Models. ChatGPT 1 and other Generative AI
+vidingclearindicatorsfortheobjectareastobeerased (GAI)techniquesallbelongtothecategoryofArtificialIn-
+andfilled. telligence Generated Content (AIGC), which involves the
+creationofdigitalcontent,suchasimages,music,andnatu-
+• SAM + AIGC models for filling or replacing any- rallanguage,throughAImodels.Itisconsideredanewtype
+thing: ofcontentcreationandhasshowntoachievestate-of-the-art
+performanceinvariouscontentgeneration[11,12]. Forour
+(1) After removing objects, IA provides users the op-
+workofIA,wedirectlyemployapowerfulAIGCmodelof
+tion to fill the resulting “hole” either with contextual
+StableDiffusion[11]togeneratethedesiredcontentinthe
+dataor“newcontent”. Specifically,astrongAIgener-
+holebasedontext-prompting.
+atedcontent(AIGC)modellikeStableDiffusion[11]
+is utilized to generate new objects via text prompts. 1https://chat.openai.com/
+
+=== 第 3 页 ===
+2.2.InpaintAnything objectregion. Theseissuesposechallengesforeffec-
+tively removing or filling objects. Consequently, we
+The principle of our proposed Inpaint Anything (IA) is
+employ a dilation operation to refine the mask. Fur-
+tocompositeofftheshelffoundationmodelstoenablethe
+ther, for filling objects, large masks give AIGC mod-
+abilityofsolvingextensiveimageinpaintingproblems. By
+elsmorespacetocreate,benefitingthe“alignment”to
+compositingthestrengthsofvariousfoundationmodels,IA
+user purpose. Thus, we adopt a large dilation in Fill
+can generate high-quality inpainted images. Specifically,
+Anything.
+ourIAhasthreeschemes,i.e.,RemoveAnything,FillAny-
+thingandRemoveAnything,whicharedesignedtoremove, • Fidelitymatters. Moststate-of-the-artAIGCmodels
+fillandreplaceanything,respectively. such as Stable Diffusion require require images to be
+ofafixedresolution,typically512×512. Simplyre-
+RemoveAnything. RemoveAnythingfocusesontheob- sizingimagestothisresolutionmayresultinalossof
+jectremovalproblem[2,3,5]byallowinguserstoeliminate fidelity,whichcanadverselyimpactthefinalinpainted
+anyobjectfromanimagewhileensuringthattheresulting results.Therefore,itisessentialtoadoptmeasuresthat
+image remains visually plausible. Remove Anything con- preserve the original image quality, such as utilizing
+sistsofthreesteps: clicking,segmenting,andremoving,as croppingtechniquesormaintainingtheimage’saspect
+shown in Figure 1. In the first step, users select the ob- ratiowhenresizing.
+ject they want to remove from an image by clicking on it.
+• Prompt matters. Our research indicates that text
+Next, a foundation segmentation model, such as Segment
+prompts exert a significant influence on AIGC mod-
+Anything [7], is utilized to automatically segment the ob-
+els. However, we observe that simple prompts, such
+jectbasedontheclicklocationandcreateamask. Finally,
+as“ateddybearonabench”or“aPicassopaintingon
+a state-of-the-art inpainting model, such as LaMa [13], is
+the wall”, typically produce satisfactory results in the
+usedtofilltheholecreatedbytheremovedobjectusingthe
+scenariooftext-promptinpainting. Incontrast,longer
+mask. Since the object is no longer present in the image,
+andmorecomplexpromptsmayyieldimpressiveout-
+the inpainting model fills the hole with background infor-
+comes,buttheytendtobelessuser-friendly.
+mation. Notethat,fortheentireprocess,usersonlyneedto
+clickontheobjecttheywanttoremovefromtheimage.
+3.Experiment
+Fill Anything. Fill Anything allows users to fill any ob- We evaluate Remove Anything, Fill Anything and Re-
+jectinanimagewithanycontenttheywant. Thetoolcon- placeAnythinginourInpaintAnythinginthreecases,i.e.,
+sists of four steps: clicking, segmenting, text-prompting, removingobjects,fillingobjectsandreplacingbackground,
+andgenerating. ThefirsttwostepsofFillAnythingarethe respectively. We collect test images from COCO dataset
+sameasinRemoveAnything. Inthethirdstep,usersinput [9],LaMatestset[13]andphotostakenbyourphones.The
+atextpromptthatindicateswhattheywanttofilltheobject results are in Figure 2, 3 and 4. The experimental results
+holewith. Finally,apowerfulAIGCmodel,suchasStable indicatethattheproposedInpaintAnythingisbothgeneral
+Diffusion[11],isadoptedtogeneratethedesiredcontentin androbust,effectivelyinpaintingimageswithdiversecon-
+theholebasedonthetext-promptinpaintingmodel. tent,resolutions,andaspectratios.
+Replace Anything. Replace Anything is able to replace 4.Conclusion
+any object with any background. The process of Replace
+Inpaint Anything (IA) is a versatile tool that combines
+AnythingissimilartothatofFillAnything,butinthiscase,
+thecapabilitiesofRemoveAnything,FillAnything,andRe-
+theAIGCmodelispromptedtogeneratevisuallyconsistent
+placeAnything. Basedonthevisionfoundationmodelsof
+backgroundthatexistsoutsidethespecifiedobject.
+Segmentation Anything, SOTA inpainter and AIGC mod-
+els, IA enables to realize mask-free image inpainting, and
+Practice. Compositing foundation models to solve tasks
+also supports the user-friendly operation of “click for re-
+may encounter problems such as incompatibility or inap-
+moving, and prompt for filling”. Besides, IA can handle
+propriateness. Weshouldconsiderintermediateprocessing
+more various and high-quality input images, with any as-
+for better coordination between models and tasks. In this
+pect ratio and 2K resolution. We build such interesting
+work,forimageinpaintingscenario,wesummarizeseveral
+project to demonstrate a strong power of fully exploiting
+goodpracticeforthecompositionbelow.
+theexistingLARGEAImodels,andrevealthepotentialof
+• Dilation matters. We observe that the segmentation “Composable AI”. We are also very willing to help every-
+result(i.e.,objectmask)ofSAMmaycontaindiscon- one share and promote new projects based on our Inpaint
+tinuousandnon-smoothboundaries,orholesinsidethe Anything (IA). In the future, we will further develop our
+
+=== 第 4 页 ===
+Inpaint Anything (IA) to support more practical functions, RaphaelGontijoLopes,BurcuKaragolAyan,TimSalimans,
+like fine-grained image matting, editing, etc., and apply it etal.Photorealistictext-to-imagediffusionmodelswithdeep
+tomorerealisticapplications. language understanding. Advances in Neural Information
+ProcessingSystems,35:36479–36494,2022. 2
+References [13] Roman Suvorov, Elizaveta Logacheva, Anton Mashikhin,
+Anastasia Remizova, Arsenii Ashukha, Aleksei Silvestrov,
+[1] LuChi,BoruiJiang,andYadongMu. Fastfourierconvolu- Naejin Kong, Harshith Goka, Kiwoong Park, and Victor
+tion. Advances in Neural Information Processing Systems, Lempitsky. Resolution-robust large mask inpainting with
+33:4479–4488,2020. 2 fourierconvolutions.InProceedingsoftheIEEE/CVFwinter
+[2] AntonioCriminisi,PatrickPerez,andKentaroToyama. Ob- conferenceonapplicationsofcomputervision,pages2149–
+ject removal by exemplar-based inpainting. In 2003 IEEE 2159,2022. 1,2,3
+ComputerSocietyConferenceonComputerVisionandPat-
+ternRecognition,2003.Proceedings.,volume2,pagesII–II.
+IEEE,2003. 3
+[3] Antonio Criminisi, Patrick Pe´rez, and Kentaro Toyama.
+Region filling and object removal by exemplar-based im-
+age inpainting. IEEE Transactions on Image Processing,
+13(9):1200–1212,2004. 3
+[4] Qiaole Dong, Chenjie Cao, and Yanwei Fu. Incremental
+transformerstructureenhancedimageinpaintingwithmask-
+ing positional encoding. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition,
+pages11358–11368,2022. 2
+[5] Omar Elharrouss, Noor Almaadeed, Somaya Al-Maadeed,
+and Younes Akbari. Image inpainting: A review. Neural
+ProcessingLetters,51:2007–2028,2020. 3
+[6] Justin Johnson, Alexandre Alahi, and Li Fei-Fei. Percep-
+tual losses for real-time style transfer and super-resolution.
+In Computer Vision–ECCV 2016: 14th European Confer-
+ence, Amsterdam, The Netherlands, October 11-14, 2016,
+Proceedings,PartII14,pages694–711.Springer,2016. 2
+[7] AlexanderKirillov,EricMintun,NikhilaRavi,HanziMao,
+ChloeRolland,LauraGustafson,TeteXiao,SpencerWhite-
+head,AlexanderCBerg,Wan-YenLo,etal. Segmentany-
+thing. arXivpreprintarXiv:2304.02643,2023. 1,2,3
+[8] Wenbo Li, Zhe Lin, Kun Zhou, Lu Qi, Yi Wang, and Ji-
+aya Jia. Mat: Mask-aware transformer for large hole im-
+ageinpainting. InProceedingsoftheIEEE/CVFconference
+on computer vision and pattern recognition, pages 10758–
+10768,2022. 2
+[9] Tsung-YiLin,MichaelMaire,SergeBelongie,JamesHays,
+PietroPerona,DevaRamanan,PiotrDolla´r,andCLawrence
+Zitnick. Microsoft coco: Common objects in context. In
+ComputerVision–ECCV2014: 13thEuropeanConference,
+Zurich, Switzerland, September 6-12, 2014, Proceedings,
+PartV13,pages740–755.Springer,2014. 3
+[10] AndreasLugmayr,MartinDanelljan,AndresRomero,Fisher
+Yu,RaduTimofte,andLucVanGool. Repaint: Inpainting
+usingdenoisingdiffusionprobabilisticmodels. InProceed-
+ingsoftheIEEE/CVFConferenceonComputerVisionand
+PatternRecognition,pages11461–11471,2022. 2
+[11] Robin Rombach, Andreas Blattmann, Dominik Lorenz,
+Patrick Esser, and Bjo¨rn Ommer. High-resolution image
+synthesis with latent diffusion models. In Proceedings of
+theIEEE/CVFConferenceonComputerVisionandPattern
+Recognition,pages10684–10695,2022. 1,2,3
+[12] Chitwan Saharia, William Chan, Saurabh Saxena, Lala
+Li, Jay Whang, Emily L Denton, Kamyar Ghasemipour,
+
+=== 第 5 页 ===
+Figure2: VisualizationresultsofRemoveAnything.
+
+=== 第 6 页 ===
+(a)Textprompt:ateddybearonabench
+(b)Textprompt:acameralensinthehand
+(c)Textprompt:anaircraftcarrieronthesea
+(d)Textprompt:asportscaronaroad
+(e)Textprompt:acat,waitingforfood
+Figure3: VisualizationresultsofFillAnything.
+
+=== 第 7 页 ===
+(a)Textprompt:crossroadinthecity
+(b)Textprompt:breakfast
+(c)Textprompt:abus,onthecenterofacountryroad,summerevening
+(d)Textprompt:amaninoffice
+Figure4: VisualizationresultsofReplaceAnything.

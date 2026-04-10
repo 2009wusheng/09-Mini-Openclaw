@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: mini-openclaw-backend
+    restart: unless-stopped
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./data/sessions:/app/sessions
+      - ./data/knowledge:/app/knowledge
+      - ./data/storage:/app/storage
+      - ./data/memory:/app/memory
+      - ./data/workspace:/app/workspace
+      - ./data/outputs:/app/outputs
+      - ./backend/.env:/app/.env:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - mini-openclaw
+
+  frontend:
+    build: ./frontend
+    container_name: mini-openclaw-frontend
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8002
+    depends_on:
+      - backend
+    networks:
+      - mini-openclaw
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: mini-openclaw-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - mini-openclaw
+
+volumes:
+  caddy_data:
+  caddy_config:
+
+networks:
+  mini-openclaw:
+    driver: bridge

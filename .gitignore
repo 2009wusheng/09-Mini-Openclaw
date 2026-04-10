@@ -1,0 +1,67 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv
+
+# Virtual environment
+backend/openclaw/
+
+# Node.js
+node_modules/
+.next/
+out/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# Sessions and uploads
+sessions/
+knowledge/uploads/
+
+# Docker & Deployment
+data/
+deploy-scripts/
+*.tar.gz
+deploy-fix*.tar.gz
+
+# Large media files
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+
+# Claude settings
+.claude/
+
+# Legacy files
+deploy-legacy.sh
+
+# Compiled files
+*.exe
+*.dll
+*.so
